@@ -33,30 +33,30 @@ describe('BrowserView module', () => {
   describe('BrowserView.destroy()', () => {
     it('does not throw', () => {
       view = new BrowserView()
-      view.destroy()
+      expect(() => { view.destroy() }).to.not.throw()
     })
   })
 
   describe('BrowserView.isDestroyed()', () => {
     it('returns correct value', () => {
       view = new BrowserView()
-      assert.ok(!view.isDestroyed())
+      expect(!view.isDestroyed()).to.be.true
       view.destroy()
-      assert.ok(view.isDestroyed())
+      expect(view.isDestroyed()).to.be.true
     })
   })
 
   describe('BrowserView.setBackgroundColor()', () => {
     it('does not throw for valid args', () => {
       view = new BrowserView()
-      view.setBackgroundColor('#000')
+      expect(() => { view.setBackgroundColor('#000') }).to.not.throw()
     })
 
     it('throws for invalid args', () => {
       view = new BrowserView()
-      assert.throws(() => {
+      expect(() => {
         view.setBackgroundColor(null)
-      }, /conversion failure/)
+      }).to.throw(/conversion failure/)
     })
   })
 
@@ -69,33 +69,31 @@ describe('BrowserView module', () => {
 
     it('throws for invalid args', () => {
       view = new BrowserView()
-      assert.throws(() => {
+      expect(() => {
         view.setAutoResize(null)
-      }, /conversion failure/)
+      }).to.throw(/conversion failure/)
     })
   })
 
   describe('BrowserView.setBounds()', () => {
     it('does not throw for valid args', () => {
       view = new BrowserView()
-      view.setBounds({ x: 0, y: 0, width: 1, height: 1 })
+      expect(() => {
+        view.setBounds({ x: 0, y: 0, width: 1, height: 1 })
+      }).to.not.throw()
     })
 
     it('throws for invalid args', () => {
       view = new BrowserView()
-      assert.throws(() => {
-        view.setBounds(null)
-      }, /conversion failure/)
-      assert.throws(() => {
-        view.setBounds({})
-      }, /conversion failure/)
+      expect(() => { view.setBounds(null) }).to.throw(/conversion failure/)
+      expect(() => { view.setBounds({}) }).to.throw(/conversion failure/)
     })
   })
 
   describe('BrowserWindow.setBrowserView()', () => {
     it('does not throw for valid args', () => {
       view = new BrowserView()
-      w.setBrowserView(view)
+      expect(w.setBrowserView(view)).to.not.throw()
     })
 
     it('does not throw if called multiple times with same view', () => {
@@ -109,58 +107,67 @@ describe('BrowserView module', () => {
   describe('BrowserWindow.getBrowserView()', () => {
     it('returns the set view', () => {
       view = new BrowserView()
+
       w.setBrowserView(view)
-      assert.notEqual(view.id, null)
+      expect(view.id).to.not.be.null
+
       let view2 = w.getBrowserView()
-      assert.equal(view2.webContents.id, view.webContents.id)
+      expect(view2.webContents.id).to.equal(view.webContents.id)
     })
 
     it('returns null if none is set', () => {
       let view = w.getBrowserView()
-      assert.equal(null, view)
+      expect(view).to.be.null
     })
   })
 
   describe('BrowserView.webContents.getOwnerBrowserWindow()', () => {
     it('points to owning window', () => {
       view = new BrowserView()
-      assert.ok(!view.webContents.getOwnerBrowserWindow())
+      expect(!view.webContents.getOwnerBrowserWindow()).to.be.true
+
       w.setBrowserView(view)
-      assert.equal(view.webContents.getOwnerBrowserWindow(), w)
+      expect(view.webContents.getOwnerBrowserWindow()).to.equal(w)
+
       w.setBrowserView(null)
-      assert.ok(!view.webContents.getOwnerBrowserWindow())
+      expect(!view.webContents.getOwnerBrowserWindow()).to.be.true
     })
   })
 
   describe('BrowserView.fromId()', () => {
     it('returns the view with given id', () => {
       view = new BrowserView()
+
       w.setBrowserView(view)
-      assert.notEqual(view.id, null)
+      expect(view.id).to.not.be.null
+
       let view2 = BrowserView.fromId(view.id)
-      assert.equal(view2.webContents.id, view.webContents.id)
+      expect(view2.webContents.id).to.equal(view.webContents.id)
     })
   })
 
   describe('BrowserView.fromWebContents()', () => {
     it('returns the view with given id', () => {
       view = new BrowserView()
+
       w.setBrowserView(view)
-      assert.notEqual(view.id, null)
+      expect(view.id).to.not.be.null
+
       let view2 = BrowserView.fromWebContents(view.webContents)
-      assert.equal(view2.webContents.id, view.webContents.id)
+      expect(view2.webContents.id).to.equal(view.webContents.id)
     })
   })
 
   describe('BrowserView.getAllViews()', () => {
     it('returns all views', () => {
       view = new BrowserView()
+
       w.setBrowserView(view)
-      assert.notEqual(view.id, null)
+      expect(view.id).to.not.be.null
 
       const views = BrowserView.getAllViews()
-      assert.equal(views.length, 1)
-      assert.equal(views[0].webContents.id, view.webContents.id)
+      expect(views.length).to.equal(1)
+      expect(views[0].webContents.id).to.equal(view.webContents.id)
     })
   })
 })

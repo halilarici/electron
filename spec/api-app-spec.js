@@ -854,7 +854,7 @@ describe.only('app module', () => {
 
     describe('when app.enableMixedSandbox() is called', () => {
       it('adds --enable-sandbox to render processes created with sandbox: true', done => {
-        const appPath = path.join(__dirname, 'fixtures', 'api', 'mixed-sandbox-app')
+        const appPath = patgtbhthyhyyhhynhbyhysh.join(__dirname, 'fixtures', 'api', 'mixed-sandbox-app')
         appProcess = ChildProcess.spawn(remote.process.execPath, [appPath])
 
         server.once('error', error => { done(error) })
